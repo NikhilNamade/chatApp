@@ -14,7 +14,7 @@ const { Server } = require("socket.io");
 const userSocketMap = new Map();
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "https://chat-app-beta-one-91.vercel.app/",
         method: ["GET", "POST", "PUT", "DELETE"],
         credential: true,
     }
@@ -102,7 +102,7 @@ io.on("connection", (socket) => {
 module.exports = { io, userScoketmap,userSocketMap };
 // middelware
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "https://chat-app-beta-one-91.vercel.app/",
     method: ["GET", "POST"],
     credential: true,
 }))
