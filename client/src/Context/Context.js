@@ -104,7 +104,7 @@ export const ContextProvider = ({ children }) => {
   const [unseen, setunseen] = useState({});
   const fetchUser = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/fetchcurrentuser", {
+      const response = await fetch("https://chatapp-hzz6.onrender.com/auth/fetchcurrentuser", {
         method: "GET",
         headers: {
           "jwtToken": localStorage.getItem("jwtToken"),
@@ -139,7 +139,7 @@ export const ContextProvider = ({ children }) => {
 
   const fetchRoom = async()=>{
     try {
-      const response = await fetch("http://localhost:5000/api/room/fetchroom",{
+      const response = await fetch("https://chatapp-hzz6.onrender.com/api/room/fetchroom",{
         method:"GET",
         headers:{
           "jwtToken": localStorage.getItem("jwtToken"),
@@ -159,7 +159,7 @@ export const ContextProvider = ({ children }) => {
   const [messages, setmessage] = useState([]);
   const fetchbyid = async ({ selectedChat }) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/fetchbyid/${selectedChat._id}`, {
+      const response = await fetch(`https://chatapp-hzz6.onrender.com/api/auth/fetchbyid/${selectedChat._id}`, {
         method: "GET",
         headers: {
           "jwtToken": localStorage.getItem("jwtToken"),

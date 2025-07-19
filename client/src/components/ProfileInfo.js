@@ -72,7 +72,7 @@ const ProfileInfo = ({ selectedChat }) => {
   };
 
   const handelremove = async(id)=>{ 
-    const response = await fetch(`http://localhost:5000/api/room/removemember/${id}`,{
+    const response = await fetch(`https://chatapp-hzz6.onrender.com/api/room/removemember/${id}`,{
       method:"POST",
       headers:{
         "Content-Type" : "application/json",
@@ -88,7 +88,7 @@ const ProfileInfo = ({ selectedChat }) => {
   }
   const fetchbyid = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/fetchbyid/${selectedChat._id}`, {
+      const response = await fetch(`https://chatapp-hzz6.onrender.com/api/auth/fetchbyid/${selectedChat._id}`, {
         method: "GET",
         headers: {
           "jwtToken": localStorage.getItem("jwtToken"),
@@ -106,7 +106,7 @@ const ProfileInfo = ({ selectedChat }) => {
 
   const fetchroombyid = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/room/fetchbyid/${selectedChat._id}`, {
+      const response = await fetch(`https://chatapp-hzz6.onrender.com/api/room/fetchbyid/${selectedChat._id}`, {
         method: "GET",
       });
       const data = await response.json();
@@ -122,7 +122,7 @@ const ProfileInfo = ({ selectedChat }) => {
 
   const fetchRoomMessages = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/room/messages/${selectedChat._id}`, {
+      const response = await fetch(`https://chatapp-hzz6.onrender.com/api/room/messages/${selectedChat._id}`, {
         method: "GET",
         headers: {
           "jwtToken": localStorage.getItem("jwtToken"),
@@ -139,7 +139,7 @@ const ProfileInfo = ({ selectedChat }) => {
 
   const fetchusernotinroom = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/room/fetchnotmemberuser/${selectedChat._id}`, {
+      const response = await fetch(`https://chatapp-hzz6.onrender.com/api/room/fetchnotmemberuser/${selectedChat._id}`, {
         method: "GET",
       });
       const data = await response.json();
@@ -153,7 +153,7 @@ const ProfileInfo = ({ selectedChat }) => {
 
   const handleAddUsersToGroup = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/room/addusers/${selectedChat._id}`, {
+      const response = await fetch(`https://chatapp-hzz6.onrender.com/api/room/addusers/${selectedChat._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

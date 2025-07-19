@@ -42,7 +42,7 @@ const SignUp = ({setProgress}) => {
       if(profilePic){
         formdata.append("profilePic",profilePic);
       }
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch("https://chatapp-hzz6.onrender.com/api/auth/register", {
         method: "POST",
         body: formdata,
       });

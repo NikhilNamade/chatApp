@@ -147,7 +147,7 @@ const ChatMain = ({ selectedChat }) => {
       formData.append("media", file);
     }
     try {
-      const response = await fetch(`http://localhost:5000/api/msg/sendmsg`, {
+      const response = await fetch(`https://chatapp-hzz6.onrender.com/api/msg/sendmsg`, {
         method: "POST",
         headers: {
           "jwtToken": localStorage.getItem("jwtToken"),
@@ -169,7 +169,7 @@ const ChatMain = ({ selectedChat }) => {
 
   const fetchbyid = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/fetchbyid/${selectedChat._id}`, {
+      const response = await fetch(`https://chatapp-hzz6.onrender.com/api/auth/fetchbyid/${selectedChat._id}`, {
         method: "GET",
         headers: {
           "jwtToken": localStorage.getItem("jwtToken"),
@@ -188,7 +188,7 @@ const ChatMain = ({ selectedChat }) => {
 
   const fetchroombyid = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/room/fetchbyid/${selectedChat._id}`, {
+      const response = await fetch(`https://chatapp-hzz6.onrender.com/api/room/fetchbyid/${selectedChat._id}`, {
         method: "GET",
       });
       const data = await response.json();
@@ -203,7 +203,7 @@ const ChatMain = ({ selectedChat }) => {
 
   const fetchRoomMessages = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/room/messages/${selectedChat._id}`, {
+      const response = await fetch(`https://chatapp-hzz6.onrender.com/api/room/messages/${selectedChat._id}`, {
         method: "GET",
         headers: {
           "jwtToken": localStorage.getItem("jwtToken"),
