@@ -148,7 +148,6 @@ export const ContextProvider = ({ children }) => {
       const data = await response.json();
       if(data){
         setRoom(data.rooms);
-        console.log(data.rooms);
       }
     } catch (error) {
       console.log(error);
