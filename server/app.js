@@ -14,7 +14,7 @@ const { Server } = require("socket.io");
 const userSocketMap = new Map();
 const io = new Server(server, {
     cors: {
-        origin: "https://chat-app-beta-one-91.vercel.app/",
+        origin: "https://chat-app-beta-one-91.vercel.app",
         method: ["GET", "POST", "PUT", "DELETE"],
         credential: true,
     }
@@ -26,13 +26,19 @@ const userScoketmap = {};
 
 io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
-    console.log("User Connected" + userId);
-    userSocketMap.set(userId, socket.id);
-    if (userId) {
+    console.log("User Connected: " + userId);
+
+    if (userId && userId !== 'undefined') {
+        // Store user in both maps for consistency
+        userSocketMap.set(userId, socket.id);
         userScoketmap[userId] = socket.id;
+
+        // Emit updated online users list
         io.emit("getOnlineUser", Object.keys(userScoketmap));
+        console.log("Online users:", Object.keys(userScoketmap));
     } else {
         console.warn("Socket connected without a valid userId!");
+        return;
     }
     socket.on("roomjoin", (roomIds) => {
         if (Array.isArray(roomIds)) {
@@ -43,7 +49,7 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("createRoom", async ({ roomName, users,creator }, callback) => {
+    socket.on("createRoom", async ({ roomName, users, creator }, callback) => {
         const roomId = `room_${Date.now()}`;
         users.forEach((userid) => {
             const sid = userSocketMap.get(userid);
@@ -56,7 +62,7 @@ io.on("connection", (socket) => {
             roomId,
             roomName,
             members: users,
-            createdBy : creator,
+            createdBy: creator,
         });
         callback({ success: true, room });
     });
@@ -71,7 +77,7 @@ io.on("connection", (socket) => {
                     console.log(`User ${userId} added to room ${roomId}`);
                 }
             });
-            
+
             // Emit to all room members about the new users
             io.to(roomId).emit("usersAddedToRoom", {
                 roomId,
@@ -86,11 +92,45 @@ io.on("connection", (socket) => {
 
     io.emit("getOnlineUser", Object.keys(userScoketmap));
 
+    // Handle real-time message sending
+    socket.on("sendMessage", async (messageData) => {
+        try {
+            const { receiverId, receiverModel, text, media } = messageData;
+            const isRoomMessage = receiverModel === 'ROOM';
+
+            if (isRoomMessage) {
+                // Send to all users in the room
+                io.to(receiverId).emit("newMsg", messageData);
+                console.log(`Message sent to room ${receiverId}`);
+            } else {
+                // Send to specific user
+                const receiverSocketId = userScoketmap[receiverId];
+                if (receiverSocketId) {
+                    io.to(receiverSocketId).emit("newMsg", messageData);
+                    console.log(`Message sent to user ${receiverId}`);
+                } else {
+                    console.log(`User ${receiverId} is offline`);
+                }
+            }
+        } catch (error) {
+            console.error("Error handling sendMessage:", error);
+        }
+    });
+
     socket.on("disconnect", async () => {
         const lastSeen = new Date();
-        console.log("User Disconnected" + userId);
-        delete userScoketmap[userId];
-        io.emit("getOnlineUser", Object.keys(userScoketmap));
+        console.log("User Disconnected: " + userId);
+
+        // Clean up both maps
+        if (userId && userId !== 'undefined') {
+            delete userScoketmap[userId];
+            userSocketMap.delete(userId);
+
+            // Emit updated online users list
+            io.emit("getOnlineUser", Object.keys(userScoketmap));
+            console.log("Updated online users after disconnect:", Object.keys(userScoketmap));
+        }
+
         try {
             await USER.findByIdAndUpdate(userId, { lastSeen });
         } catch (err) {
@@ -99,17 +139,17 @@ io.on("connection", (socket) => {
     })
 })
 
-module.exports = { io, userScoketmap,userSocketMap };
+module.exports = { io, userScoketmap, userSocketMap };
 // middelware
 app.use(cors({
-    origin: "https://chat-app-beta-one-91.vercel.app/",
+    origin: "https://chat-app-beta-one-91.vercel.app",
     method: ["GET", "POST"],
     credential: true,
 }))
 app.use(express.json());
 app.use("/api/auth", require("./route/auth"));
 app.use("/api/msg", require("./route/message"));
-app.use("/api/room",require("./route/room"))
+app.use("/api/room", require("./route/room"))
 
 server.listen(port, () => {
     console.log(`server is running on port ${port}`);
