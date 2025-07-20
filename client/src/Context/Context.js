@@ -32,7 +32,7 @@ export const ContextProvider = ({ children }) => {
   const connectSocket = () => {
     if (!isAuth || socket?.connected || !userid) return;
 
-    const newSocket = io("http://localhost:5000", {
+    const newSocket = io("https://chatapp-hzz6.onrender.com", {
       query: {
         userId: userid,
       }
@@ -104,7 +104,7 @@ export const ContextProvider = ({ children }) => {
   const [unseen, setunseen] = useState({});
   const fetchUser = async () => {
     try {
-      const response = await fetch("https://chatapp-hzz6.onrender.com/auth/fetchcurrentuser", {
+      const response = await fetch("https://chatapp-hzz6.onrender.com/api/auth/fetchcurrentuser", {
         method: "GET",
         headers: {
           "jwtToken": localStorage.getItem("jwtToken"),
@@ -121,7 +121,7 @@ export const ContextProvider = ({ children }) => {
 
   const fetchALLUser = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/fecthalluser", {
+      const response = await fetch("https://chatapp-hzz6.onrender.com/api/auth/fecthalluser", {
         method: "GET",
         headers: {
           "jwtToken": localStorage.getItem("jwtToken"),
@@ -148,7 +148,6 @@ export const ContextProvider = ({ children }) => {
       const data = await response.json();
       if(data){
         setRoom(data.rooms);
-        console.log(data.rooms);
       }
     } catch (error) {
       console.log(error);
