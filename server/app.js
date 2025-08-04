@@ -14,11 +14,11 @@ const { Server } = require("socket.io");
 const userSocketMap = new Map();
 const io = new Server(server, {
     cors: {
-        origin: "https://chat-app-beta-one-91.vercel.app",
-        method: ["GET", "POST", "PUT", "DELETE"],
-        credential: true,
+      origin: "https://chat-app-beta-one-91.vercel.app",
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      credentials: true
     }
-})
+  });
 
 
 // store online users
@@ -143,9 +143,9 @@ module.exports = { io, userScoketmap, userSocketMap };
 // middelware
 app.use(cors({
     origin: "https://chat-app-beta-one-91.vercel.app",
-    method: ["GET", "POST"],
-    credential: true,
-}))
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true
+  }));  
 app.use(express.json());
 app.use("/api/auth", require("./route/auth"));
 app.use("/api/msg", require("./route/message"));
