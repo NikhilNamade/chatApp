@@ -35,8 +35,9 @@ export const ContextProvider = ({ children }) => {
     const newSocket = io("https://chatapp-hzz6.onrender.com", {
       query: {
         userId: userid,
-      }
-    });
+      },
+      transports: ["websocket"],  // <- force WebSocket only
+    });    
     newSocket.connect();
     setSocket(newSocket);
 
