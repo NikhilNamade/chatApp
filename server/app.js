@@ -13,12 +13,14 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const userSocketMap = new Map();
 const io = new Server(server, {
-    cors: {
-      origin: "https://chat-app-beta-one-91.vercel.app",
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      credentials: true
-    }
-  });
+  cors: {
+    origin: "https://chat-app-beta-one-91.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  },
+  transports: ["websocket"], // ✅ Add this too
+});
+
 
 
 // store online users
