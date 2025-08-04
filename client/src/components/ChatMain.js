@@ -250,7 +250,7 @@ const ChatMain = ({ selectedChat }) => {
 
     socket.on("newMsg", handleNewMessage);
     return () => socket.off("newMsg", handleNewMessage);
-  }, [socket, selectedChat, messages]);
+  }, [socket, selectedChat]);
   return (
     <div className="chat-main">
       {
